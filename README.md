@@ -1,45 +1,21 @@
 # Fluxo multimodal de atendimento — Cafeteria do campus Inteli
 
-Projeto de um fluxo de interação **voz + tela** para atendimento de cafeteria, em que cada decisão de conteúdo é alocada a um canal e justificada pelas **propriedades CARE** e pela **regra de condensação**. O foco não é o desenho conversacional em si, e sim o raciocínio de alocação: por que este conteúdo cabe à voz, este à tela e este aos dois.
+Projeto de um fluxo de interação **voz + tela** para atendimento de cafeteria, em que cada decisão de conteúdo é alocada a um canal e justificada pelas **propriedades CARE** e pela **regra de condensação**, focando no entendimento do raciocínio de alocação: por que este conteúdo cabe à voz, este à tela e este aos dois.
 
 ---
 
-## 1. Problema
+## 1. Agrupamento de dispositivo adotado: tela auxiliar compartilhada
 
-Projetar o fluxo multimodal de atendimento da cafeteria do campus cobrindo cinco situações:
-
-1. escolher uma bebida
-2. escolher o tamanho da bebida
-3. escolher uma comida
-4. avisar sobre alérgeno
-5. confirmar o pedido
-
-O fluxo cobre ainda um turno de reparo — pedido ambíguo, resolvido por desambiguação — usado para exercitar o tratamento de erro nos dois canais.
-
----
-
-## 2. Agrupamento de dispositivo
-
-A taxonomia do *Scale your design* (Google Conversation Design Guidelines) classifica o dispositivo pelo **papel da tela em relação à voz**, não pelo tamanho dela:
-
-| Agrupamento | Definição |
-|---|---|
-| **Sem tela** | Só áudio. Se não foi falado, não existe. |
-| **Tela auxiliar** | Há tela, mas ela é apoio: a tarefa **não** pode ser concluída apenas olhando e tocando. A voz conduz. |
-| **Tela equivalente** | Voz e tela têm capacidade equivalente: a tarefa pode ser concluída inteiramente por qualquer um dos canais. |
-
-### Agrupamento adotado: tela auxiliar compartilhada
-
-Display fixo atrás do balcão da cafeteria, visível para quem atende e para a fila. A voz é o canal condutor — só ela abre turno, pergunta e negocia reparos. A tela é apoio e **não aceita entrada**, com a única exceção dos botões *Confirmar* e *Cancelar* no fechamento do pedido. Não é possível montar um pedido apenas tocando, o que distingue este agrupamento de uma tela equivalente.
+A taxonomia do *Scale your design* (Google Conversation Design Guidelines) classifica o dispositivo pelo **papel da tela em relação à voz**. nesse sentido, considerei o display fixo atrás do balcão da cafeteria, visível para quem atende e para a fila, bem como a voz como canal condutor, onde só ela abre turno, pergunta e negocia reparos. Nesse contexto, a tela é apoio e **não aceita entrada**, com a única exceção dos botões *Confirmar* e *Cancelar* no fechamento do pedido. Não é possível montar um pedido apenas tocando, o que distingue este agrupamento de uma tela equivalente.
 
 Duas consequências atravessam todo o projeto:
 
 - a tela pode receber listas, preços e composições que seriam insuportáveis se enunciadas;
-- **tudo que aparece na tela é público**, o que restringe o tratamento de informação sensível no turno do alérgeno (seção 6).
+- **tudo que aparece na tela é público**, o que restringe o tratamento de informação sensível no turno do alérgeno.
 
 ---
 
-## 3. Conceitos aplicados
+## 2. Conceitos aplicados
 
 ### Propriedades CARE
 
@@ -62,7 +38,7 @@ O prompt falado **não reproduz** o conteúdo estruturado que está na tela. A v
 
 | | Critério | Exemplo no fluxo |
 |---|---|---|
-| **Deliberada** | O ganho justifica o custo de turno: percepção de erro, compromisso irreversível ou necessidade de persistência. | O total (R$ 15,00) é falado **e** exibido — único ponto com compromisso financeiro irreversível. |
+| **Deliberada** | O ganho justifica o custo de turno: percepção de erro, compromisso irreversível ou necessidade de persistência. | O total (R$ 15,00) é falado **e** exibido, único ponto com compromisso financeiro irreversível. |
 | **Nociva** | Duplica conteúdo estruturado num canal serial e efêmero, alongando o turno sem acrescentar informação. | Ler em voz alta os cinco doces que a tela já exibe: a voz deixa de conduzir e vira leitora de tela. |
 
 ### Tela pessoal vs. tela compartilhada
@@ -95,7 +71,7 @@ O caráter da tela decide o tratamento de informação sensível. O projeto sepa
 |---|---|---|---|
 | **T0** · Abertura | *[aproxima-se do balcão]* | *[som de ativação]* "Boa tarde! Pode pedir." | Cardápio completo com preços · indicador "Ouvindo…" |
 | **T1** · Bebida | "Um chocolate quente." | "Chocolate quente." | Carrinho: **1 Chocolate quente** |
-| **T2** · Tamanho e cobertura | "Médio." / "Canela." | "Qual tamanho — pequeno, médio ou grande?" · "Médio. Quer chantilly, canela, ou sem cobertura?" · "Fechado, com canela. Mais alguma coisa?" | P 200 ml R$ 7,00 · M 300 ml R$ 9,00 · G 400 ml R$ 11,00 → Carrinho R$ 9,00 · Chantilly +R$ 2,00, canela sem acréscimo |
+| **T2** · Tamanho e cobertura | "Médio." / "Canela." | "Qual tamanho: pequeno, médio ou grande?" · "Médio. Quer chantilly, canela, ou sem cobertura?" · "Fechado, com canela. Mais alguma coisa?" | P 200 ml R$ 7,00 · M 300 ml R$ 9,00 · G 400 ml R$ 11,00 → Carrinho R$ 9,00 · Chantilly +R$ 2,00, canela sem acréscimo |
 | **T3** · Comida | "Vocês têm alguma coisa doce?" / "Um cookie." | "Cinco opções no display. Alguma te interessa?" | Bolo de cenoura R$ 5,50 · Cookie de castanha R$ 6,00 · Cookie de chocolate R$ 6,00 · Brownie R$ 7,50 · Muffin de banana R$ 5,00 |
 | **T4** · Reparo (pedido ambíguo) | "De castanha." | *[som breve de dúvida]* "Tem dois cookies. De castanha ou de chocolate?" · "Cookie de castanha, anotado." | Os dois cookies ganham contorno; os outros três ficam esmaecidos → Carrinho **+ R$ 6,00** |
 | **T5** · Alérgeno | "Pode." | "Atenção: esse cookie leva castanha-de-caju. Pode seguir?" | **Contém:** castanha-de-caju, trigo, ovo, leite · **Traços de:** amendoim, soja · ⊘ perfil de restrições **suprimido** |
@@ -135,23 +111,19 @@ As linhas marcadas com 🟡 são os casos exigidos pelo enunciado: um de **compl
 
 ## 6. Nota de decisão
 
-**Agrupamento.** Projetei para **tela auxiliar compartilhada**: display fixo no balcão, sem entrada por toque exceto os botões de confirmação. A voz conduz o fluxo do começo ao fim e a tela existe para o que a fala faz mal — listas comparáveis, preços, composição do pedido e estados que precisam persistir. A assimetria é deliberada: se a tela aceitasse entrada plena, o agrupamento viraria tela equivalente e a tentação seria duplicar o mesmo conteúdo nos dois canais.
+**Agrupamento.** Projetei para **tela auxiliar compartilhada**: display fixo no balcão, sem entrada por toque exceto os botões de confirmação. A voz conduz o fluxo do começo ao fim e a tela existe para o que a fala faz mal: listas comparáveis, preços, composição do pedido e estados que precisam persistir. A assimetria é deliberada: se a tela aceitasse entrada plena, o agrupamento viraria tela equivalente e a tentação seria duplicar o mesmo conteúdo nos dois canais.
 
-**Alérgeno e o caráter compartilhado da tela.** Separei duas informações que costumam ser tratadas como uma só. "Este cookie contém castanha-de-caju" é atributo *do produto*: vale para qualquer cliente, já consta da ficha técnica e pode ocupar a tela pública — inclusive com a lista de traços, que a voz não deve enunciar. Já "você registrou alergia a castanhas" é atributo *da pessoa*, e dado de saúde. Numa tela que a fila inteira enxerga, exibi-lo divulga a terceiros algo que a pessoa não escolheu divulgar, e o faz sem que ela perceba, porque a tela está atrás do balcão e ela está de frente para o atendente. Por isso o perfil de restrições nunca vai à tela: havendo conflito, apenas a voz diz "esse item conflita com uma restrição do seu perfil, quer trocar?", sem nomear a restrição — audível para quem está no balcão, mas sem registro visual persistente. Se o agrupamento fosse tela equivalente pessoal (o celular da pessoa), essa supressão não se justificaria e o detalhe poderia ir à tela: **a mesma informação muda de canal quando muda a audiência da tela**.
+**Alérgeno e o caráter compartilhado da tela.** Separei duas informações que costumam ser tratadas como uma só. "Este cookie contém castanha-de-caju" é atributo *do produto*: vale para qualquer cliente, já consta da ficha técnica e pode ocupar a tela pública, inclusive com a lista de traços, que a voz não deve enunciar. Já "você registrou alergia a castanhas" é atributo *da pessoa*, e dado de saúde. Numa tela que a fila inteira enxerga, exibi-lo divulga a terceiros algo que a pessoa não escolheu divulgar, e o faz sem que ela perceba, porque a tela está atrás do balcão e ela está de frente para o atendente. Por isso o perfil de restrições nunca vai à tela: havendo conflito, apenas a voz diz "esse item conflita com uma restrição do seu perfil, quer trocar?", sem nomear a restrição, isso é audível para quem está no balcão, mas não há registro visual persistente. Se o agrupamento fosse tela equivalente pessoal (o celular da pessoa), essa supressão não se justificaria e o detalhe poderia ir à tela. Isso me leva a concluir que a mesma informação muda de canal quando muda a audiência da tela.
 
-**Redundância nociva eliminada.** Em T3, a voz não lê os cinco doces que a tela já exibe: diz "cinco opções no display. Alguma te interessa?". Enunciá-los duplicaria conteúdo estruturado num canal serial e efêmero — cerca de quinze segundos de fala, cinco itens a reter de memória enquanto estão visíveis, e nenhuma informação nova, já que a tela ainda acrescenta o preço. A voz perderia a função de conduzir e viraria leitora de tela. O mesmo corte vale em T5, onde a voz enuncia só o alérgeno de maior risco e deixa a lista completa e os traços para o display.
+**Redundância nociva eliminada.** Em T3, a voz não lê os cinco doces que a tela já exibe: diz "cinco opções no display. Alguma te interessa?". Enunciá-los duplicaria conteúdo estruturado num canal serial e efêmero, algo em torno de quinze segundos de fala, cinco itens a reter de memória enquanto estão visíveis, e nenhuma informação nova, já que a tela ainda acrescenta o preço. A voz perderia a função de conduzir e viraria leitora de tela. O mesmo corte vale em T5, onde a voz enuncia só o alérgeno de maior risco e deixa a lista completa e os traços para o display.
 
 ---
 
 ## 7. Declaração de uso de IA
 
-**Houve uso de IA nesta atividade.** Ferramenta: Claude (Anthropic).
+**Houve uso de IA nesta atividade.** Utilizei a ferramenta Claude (Anthropic) para avaliar com mais facilidade os trade-offs entre os agrupamentos possíveis para este contexto; Após eu definir o agrupamento que queria trabalhar e os detalhes, pedi para ele gerar a imagem do diagrama e organizar as informações na tabela de alocação, materiais esses que revisei logo em seguida.
 
-**O que a ferramenta fez:** explicou a taxonomia de agrupamento de dispositivos do *Scale your design*; apresentou os trade-offs entre os agrupamentos possíveis para este contexto; e produziu a primeira versão do fluxo, da tabela de alocação e da nota de decisão.
-
-**O que eu fiz:** escolhi o agrupamento entre as alternativas apresentadas, defini o cenário de pedido, revisei cada linha da tabela e as justificativas CARE, e ajustei o conteúdo antes da entrega.
-
-**Sobre o Anexo A:** o fluxo voz-apenas de referência foi consultado apenas para calibrar o nível de detalhe esperado. O cenário, as falas, os itens de cardápio, os preços e o tipo de reparo deste trabalho são distintos dos do Anexo.
+**Sobre o Anexo A:** eu consultei o fluxo voz-apenas de referência para definir o nível de detalhe esperado. A distinção com relação ao anexo estão no cenário, falas, itens e seus detalhes.
 
 ---
 
