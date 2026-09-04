@@ -10,7 +10,7 @@ A taxonomia do *Scale your design* (Google Conversation Design Guidelines) class
 
 Duas consequências atravessam todo o projeto:
 
-- a tela pode receber listas, preços e composições que não cabem serem enunciadas por voz;
+- a tela pode receber listas, preços e composições que não são enunciadas por voz;
 - **tudo que aparece na tela é público**, o que restringe o tratamento de informação sensível no turno do alérgeno.
 
 ---
