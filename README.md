@@ -1,4 +1,4 @@
-# Fluxo multimodal de atendimento — Cafeteria do campus Inteli
+# Fluxo multimodal de atendimento para cafeteria do Inteli
 
 Projeto de um fluxo de interação **voz + tela** para atendimento de cafeteria, em que cada decisão de conteúdo é alocada a um canal e justificada pelas **propriedades CARE** e pela **regra de condensação**, focando no entendimento do raciocínio de alocação: por que este conteúdo cabe à voz, este à tela e este aos dois.
 
